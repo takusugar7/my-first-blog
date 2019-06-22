@@ -7,10 +7,27 @@
                 {{ post.published_date }}
             </div>
         {% endif %}
-        {% if user.is_authenticated %}
+        {% if user.is_superuser %}
             <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
         {% endif %}
         <h1>{{ post.title }}</h1>
         <p>{{ post.text|linebreaksbr }}</p>
+    </div>
+    <div>
+        <h3>コメント</h3>
+        {% if user.is_authenticated %}
+        <form method="post" action="">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit">
+        </form>
+        {% endif %}
+        <hr>
+        {% for comment in comments %}
+          author: {{ comment.author }}<br>
+          name: {{ comment.name }}<br>
+          {{ comment.text }}<br>
+          <hr>
+        {% endfor %}
     </div>
 {% endblock %}
